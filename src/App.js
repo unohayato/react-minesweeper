@@ -1,9 +1,16 @@
 import './App.css';
 
 function App() {
+  const containerStyle = {
+    display: 'flex',
+    justifyContent: 'center',
+  }
   return (
     <div className="App">
-      <h1>Hello</h1>
+      <h2>Minesweeper</h2>
+      <div style={containerStyle}>
+        
+      </div>
     </div>
   );
 }
