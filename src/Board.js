@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import createBorad from "./createBoard";
+import Cell from "./Cell";
 
 const Board = ({row, col, mines}) => {
   const [gameData, setGameData] = useState({});
@@ -32,7 +33,7 @@ const Board = ({row, col, mines}) => {
             <div style={{display: "flex"}} key={index1}>
               {
                 singleRow.map((singleCell, index2) => {
-                  return <div key={index2}>{singleCell.value}</div>
+                  return <Cell key={index2} details={singleCell} />
                 })
               }
             </div>
