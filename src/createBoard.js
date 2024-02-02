@@ -9,7 +9,7 @@ const createBorad = (row, col, mines) => {
       // これが1マス分のセルの状態
       r.push({
         value: 0, // マスの周り3*3の地雷数, 地雷自身の場合は'X'
-        revealed: false,
+        revealed: false, // セルが開いているか否か
         x: x,
         y: y,
         flagged: false
