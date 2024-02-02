@@ -4,6 +4,22 @@ import Cell from "./Cell";
 
 const Board = ({row, col, mines}) => {
   const [gameData, setGameData] = useState({});
+  const [resetGame, setResetGame] = useState(true);
+
+  // ゲームのリセット
+  useEffect(() => {
+    const newBoard = createBorad(row, col, mines);
+    console.log(newBoard);
+
+    setGameData({
+      board: newBoard,
+      gameStatus: "Game in Progress",
+      cellsWithoutMines: row * col - mines,
+      numOfMines: mines
+    });
+
+    setResetGame(false);
+  }, [row, col, mines, resetGame]);
   
   // 最初だけゲーム情報を入れる
   useEffect(() => {
@@ -124,7 +140,10 @@ const Board = ({row, col, mines}) => {
 
   return (
     <div>
-      <div>残りの地雷数: {gameData.numOfMines}</div>
+      <div>
+        🚩 {gameData.numOfMines} &nbsp; &nbsp;
+        <button onClick={() => {setResetGame(true);}}>Reset</button>
+      </div>
       <div>Game Status: {gameData.gameStatus}</div>
       <div>
         {gameData.board.map((singleRow, index1) => {
