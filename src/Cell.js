@@ -13,6 +13,7 @@ const Cell = ({details, onUpdateFlag}) => {
 
   // セルの種類ごとに表示する内容を変える(🚩, 💣, 周辺の爆弾数)
   const getCellDisplay = () => {
+    // デフォルトでnull=非表示で隠している
     if (!details.revealed) {
       return details.flagged ? "🚩" : null;
     }
