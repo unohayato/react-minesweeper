@@ -5,6 +5,25 @@ import Cell from "./Cell";
 const Board = ({row, col, mines}) => {
   const [gameData, setGameData] = useState({});
   const [resetGame, setResetGame] = useState(true);
+  const [count, setCount] = useState(0);
+  const [startCount, setStartCount] = useState(false);
+
+  // タイマー
+  useEffect(() => {
+    let interval;
+    if (!startCount) {return () => {}}
+    // タイマーを開始
+    interval = setInterval(() => {
+      // count ステートを1増やす
+      setCount(prevCount => prevCount + 1);
+    }, 1000); // 1秒ごとに更新
+
+    // コンポーネントのクリーンアップ時にタイマーをクリア
+    return () => {
+      clearInterval(interval);
+    };
+  }, [startCount]);
+
 
   // ゲームのリセット
   useEffect(() => {
@@ -19,6 +38,8 @@ const Board = ({row, col, mines}) => {
     });
 
     setResetGame(false);
+    setCount(0); // カウントを0にリセット
+    setStartCount(false); // タイマーを停止
   }, [row, col, mines, resetGame]);
   
   // 最初だけゲーム情報を入れる
@@ -80,6 +101,9 @@ const Board = ({row, col, mines}) => {
     if (gameData.board[x][y].revealed || gameData.board[x][y].flagged) {
       return;
     }
+    if (!startCount) {
+      setStartCount(true); // 最初のセルをクリックしたらタイマーを開始
+    }
 
     // 現在のゲームデータを取得
     const newGameData = {...gameData}
@@ -96,6 +120,7 @@ const Board = ({row, col, mines}) => {
       }
       // 強制的に負け
       newGameData.gameStatus = "You Lost";
+      setStartCount(false); // タイマーを停止
     } else if (newGameData.board[x][y].value === 0) {
       const newRevealedData = revealEmpty(x, y, newGameData);
       setGameData(newRevealedData);
@@ -105,6 +130,7 @@ const Board = ({row, col, mines}) => {
       newGameData.cellsWithoutMines--;
       if (newGameData.cellsWithoutMines === 0) {
         newGameData.gameStatus = "You Win";
+        setStartCount(false); // タイマーを停止
       }
     }
     setGameData(newGameData);
@@ -141,7 +167,7 @@ const Board = ({row, col, mines}) => {
   return (
     <div>
       <div>
-        🚩 {gameData.numOfMines} &nbsp; &nbsp;
+        🚩 {gameData.numOfMines} &nbsp; &nbsp; ⌛️ {count} &nbsp; &nbsp;
         <button onClick={() => {setResetGame(true);}}>Reset</button>
       </div>
       <div>Game Status: {gameData.gameStatus}</div>
