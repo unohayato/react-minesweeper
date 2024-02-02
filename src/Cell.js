@@ -1,4 +1,4 @@
-const Cell = ({details, onUpdateFlag}) => {
+const Cell = ({details, onUpdateFlag, onRevealCell}) => {
   const cellStyle = {
     width: 40,
     height: 40,
@@ -21,12 +21,13 @@ const Cell = ({details, onUpdateFlag}) => {
       return "💣";
     }
     if (details.value === 0) {
-      return details.value;
+      return null;
     }
+    return details.value;
   }
 
   return (
-    <div style={cellStyle} onContextMenu={(e) => onUpdateFlag(e, details.x, details.y)}>
+    <div style={details.revealed ? {...cellStyle, borderStyle: "inset"} : cellStyle} onContextMenu={(e) => onUpdateFlag(e, details.x, details.y)} onClick={() => onRevealCell(details.x, details.y)}>
       {getCellDisplay()}
     </div>
   );
