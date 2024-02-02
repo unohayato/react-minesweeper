@@ -81,7 +81,7 @@ const Board = ({row, col, mines}) => {
       const newBoard = [...prev.board]; // 現在のボードを取得
       const newFlag = !newBoard[x][y].flagged; // 現在のフラグを取得&更新
       let newNumOfMines = prev.numOfMines; // 現在の地雷数を定義(取得)(のちに更新かける)
-      newFlag ? newNumOfMines-- : newNumOfMines++; // フラグを立っている(次に外す)->地雷-1,フラグ立っていない(次に立てる)->地雷+1
+      newFlag ? (newBoard[x][y].value === "X" ? newNumOfMines-- : newNumOfMines+=0) : newNumOfMines++; // フラグを立っている(次に外す)->地雷-1,フラグ立っていない(次に立てる)->地雷+1
       newBoard[x][y].flagged = newFlag;
 
       return {
